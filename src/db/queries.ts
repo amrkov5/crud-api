@@ -10,4 +10,11 @@ const createUser = db.prepare(
 
 const deleteUser = db.prepare('DELETE FROM users WHERE id = ?');
 
-export { getUserById, getAllUsers, createUser, deleteUser };
+const updateUser = db.prepare(`
+  UPDATE users
+  SET name = ?, age = ?, hobbies = ?
+  WHERE id = ?
+  RETURNING id, name, age, hobbies
+`);
+
+export { getUserById, getAllUsers, createUser, deleteUser, updateUser };

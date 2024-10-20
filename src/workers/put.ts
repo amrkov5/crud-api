@@ -1,16 +1,16 @@
-import { v4 as uuidv4 } from 'uuid';
-import { createUser } from '../db/queries';
-import validateData from './validateData';
+import { updateUser } from '../db/queries';
 import { ReceivedData, UserFromDB } from '../types';
+import validateData from './validateData';
 
-const handlePostRequest = (data: ReceivedData) => {
+const editUser = (url: string, data: ReceivedData) => {
+  const paramsArr = url.split('/').filter((el) => !!el);
   try {
     if (validateData(data)) {
-      const res = createUser.get(uuidv4(), data.name, data.age, data.hobbies.join(','));
+      const res = updateUser.get(data.name, data.age, data.hobbies.join(','), paramsArr[2]);
       const resObj = Object.assign({}, res) as UserFromDB;
       const hobbiesArr = resObj.hobbies.split(',').filter((el: string) => el.length > 0);
       const result = { ...resObj, hobbies: hobbiesArr };
-      return { code: 201, data: JSON.stringify(result) };
+      return { code: 200, data: JSON.stringify(result) };
     }
     return { code: 400, data: JSON.stringify({ message: 'Bad request: Invalid input data' }) };
   } catch {
@@ -18,4 +18,4 @@ const handlePostRequest = (data: ReceivedData) => {
   }
 };
 
-export default handlePostRequest;
+export default editUser;

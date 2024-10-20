@@ -10,8 +10,8 @@ db.exec(`CREATE TABLE IF NOT EXISTS users (
   )`);
 
 db.exec(`INSERT INTO users (id, name, age, hobbies) VALUES
-    ('1', 'Anton', 32, 'Reading'),
-    ('2', 'Maria', 25, 'Gaming')
+    ('9a751323-4d54-4eaf-adbc-1468fd292a12', 'Anton', 32, 'Reading,Sport'),
+    ('b21493a9-be76-4aec-b509-fba61d25ae39', 'Maria', 25, 'Gaming,Football')
 `);
 
 export default db;
