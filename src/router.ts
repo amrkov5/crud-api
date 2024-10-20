@@ -1,15 +1,17 @@
 import { IncomingMessage } from 'http';
-import { Methods, PreparedResponse } from './types';
+import { Methods } from './types';
 import handleGetRequest from './workers/get';
 import handlePostRequest from './workers/post';
 import deleteUserFromDb from './workers/delete';
 import editUser from './workers/put';
 
 const router = async (req: IncomingMessage) => {
-  if (req.url && req.url.includes('/api/users')) {
+  const paramsArr = req.url!.split('/').filter((el) => !!el);
+
+  if (req.url && paramsArr[0] === 'api' && paramsArr[1] === 'users') {
     if (req.method) {
       if (req.method === Methods.GET) {
-        const res: PreparedResponse = await handleGetRequest(req);
+        const res = await handleGetRequest(req);
         return res;
       }
       if (req.method === Methods.POST) {
@@ -90,7 +92,7 @@ const router = async (req: IncomingMessage) => {
         });
       }
       if (req.method === Methods.DELETE) {
-        const res: PreparedResponse = deleteUserFromDb(req);
+        const res = deleteUserFromDb(req);
         return res;
       }
     }

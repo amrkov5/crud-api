@@ -1,16 +1,18 @@
 import { v4 as uuidv4 } from 'uuid';
-import { createUser } from '../db/queries';
-import validateData from './validateData';
-import { ReceivedData, UserFromDB } from '../types';
+import validateData from '../service/validateData';
+import { DBMethods, ReceivedData } from '../types';
+import requestMaker from '../service/requestToDB';
 
-const handlePostRequest = (data: ReceivedData) => {
+const handlePostRequest = async (data: ReceivedData) => {
   try {
     if (validateData(data)) {
-      const res = createUser.get(uuidv4(), data.name, data.age, data.hobbies.join(','));
-      const resObj = Object.assign({}, res) as UserFromDB;
-      const hobbiesArr = resObj.hobbies.split(',').filter((el: string) => el.length > 0);
-      const result = { ...resObj, hobbies: hobbiesArr };
-      return { code: 201, data: JSON.stringify(result) };
+      const res = await requestMaker(
+        JSON.stringify({
+          reqType: DBMethods.CREATE,
+          userData: [uuidv4(), data.name, data.age, data.hobbies.join(',')],
+        }),
+      );
+      return { code: 201, data: res };
     }
     return { code: 400, data: JSON.stringify({ message: 'Bad request: Invalid input data' }) };
   } catch {

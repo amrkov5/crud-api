@@ -5,6 +5,14 @@ enum Methods {
   DELETE = 'DELETE',
 }
 
+enum DBMethods {
+  USER = 'getUserById',
+  ALL = 'getAllUsers',
+  CREATE = 'createUser',
+  DELETE = 'deleteUser',
+  UPDATE = 'updateUser',
+}
+
 type UserFromDB = {
   id: string;
   name: string;
@@ -23,4 +31,4 @@ type ReceivedData = {
   hobbies: string[];
 };
 
-export { Methods, UserFromDB, PreparedResponse, ReceivedData };
+export { Methods, UserFromDB, PreparedResponse, ReceivedData, DBMethods };

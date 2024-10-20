@@ -1,19 +1,21 @@
 import { validate } from 'uuid';
-import { getAllUsers, getUserById } from '../db/queries';
 import { IncomingMessage } from 'http';
-import { UserFromDB } from '../types';
+import { DBMethods, PreparedResponse } from '../types';
+import requestMaker from '../service/requestToDB';
 
 const handleGetRequest = async (request: IncomingMessage) => {
   const paramsArr = request.url!.split('/').filter((el) => !!el);
   try {
     if (paramsArr.length > 2) {
       if (validate(paramsArr[2])) {
-        const user = getUserById.get(paramsArr[2]) as UserFromDB | undefined;
+        const user = await requestMaker(
+          JSON.stringify({
+            reqType: DBMethods.USER,
+            userData: paramsArr[2],
+          }),
+        );
         if (user) {
-          const resObj = Object.assign({}, user) as UserFromDB;
-          const hobbiesArr = resObj.hobbies.split(',').filter((el: string) => el.length > 0);
-          const result = { ...resObj, hobbies: hobbiesArr };
-          return { code: 200, data: JSON.stringify(result) };
+          return { code: 200, data: user };
         } else {
           return { code: 404, data: JSON.stringify({ message: 'User not found' }) };
         }
@@ -21,13 +23,9 @@ const handleGetRequest = async (request: IncomingMessage) => {
         return { code: 400, data: JSON.stringify({ message: 'Bad request: Invalid user ID' }) };
       }
     } else {
-      const users = getAllUsers.all() as UserFromDB[] | [];
-      if (users) {
-        const result = users.map((el: UserFromDB) => {
-          const hobbiesArr = el.hobbies.split(',').filter((el: string) => el.length > 0);
-          return { ...el, hobbies: hobbiesArr };
-        });
-        return { code: 200, data: JSON.stringify(result) };
+      const users = (await requestMaker(JSON.stringify(DBMethods.ALL))) as PreparedResponse;
+      if (users && !users.code) {
+        return { code: 200, data: users };
       } else {
         return { code: 500, data: JSON.stringify({ message: 'Internal server error' }) };
       }

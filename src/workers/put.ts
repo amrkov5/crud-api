@@ -1,18 +1,19 @@
-import { updateUser } from '../db/queries';
-import { ReceivedData, UserFromDB } from '../types';
-import validateData from './validateData';
+import { DBMethods, ReceivedData } from '../types';
+import validateData from '../service/validateData';
+import requestMaker from '../service/requestToDB';
 
-const editUser = (url: string, data: ReceivedData) => {
+const editUser = async (url: string, data: ReceivedData) => {
   const paramsArr = url.split('/').filter((el) => !!el);
   try {
     if (validateData(data)) {
-      const res = updateUser.get(data.name, data.age, data.hobbies.join(','), paramsArr[2]);
-      console.log(res);
+      const res = await requestMaker(
+        JSON.stringify({
+          reqType: DBMethods.UPDATE,
+          userData: [data.name, data.age, data.hobbies.join(','), paramsArr[2]],
+        }),
+      );
       if (res) {
-        const resObj = Object.assign({}, res) as UserFromDB;
-        const hobbiesArr = resObj.hobbies.split(',').filter((el: string) => el.length > 0);
-        const result = { ...resObj, hobbies: hobbiesArr };
-        return { code: 200, data: JSON.stringify(result) };
+        return { code: 200, data: res };
       }
       return { code: 404, data: JSON.stringify({ message: 'User not found' }) };
     }
