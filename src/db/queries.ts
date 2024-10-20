@@ -1,6 +1,6 @@
 import db from './db';
 
-const getUserById = db.prepare('SELECT * FROM users WHERE name = ?');
+const getUserById = db.prepare('SELECT * FROM users WHERE id = ?');
 
 const getAllUsers = db.prepare('SELECT * FROM users');
 

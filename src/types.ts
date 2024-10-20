@@ -5,4 +5,22 @@ enum Methods {
   DELETE = 'DELETE',
 }
 
-export { Methods };
+type UserFromDB = {
+  id: string;
+  name: string;
+  age: number;
+  hobbies: string;
+};
+
+type PreparedResponse = {
+  code: number;
+  data: string | UserFromDB | UserFromDB[];
+};
+
+type ReceivedData = {
+  name: string;
+  age: number;
+  hobbies: string[];
+};
+
+export { Methods, UserFromDB, PreparedResponse, ReceivedData };
