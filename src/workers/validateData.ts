@@ -3,7 +3,6 @@ import { ReceivedData } from '../types';
 const validateData = (data: ReceivedData, whatToValidate = 'all') => {
   if (whatToValidate === 'all') {
     if (typeof data.name !== 'string') {
-      console.log('name');
       return false;
     }
     if (typeof data.age !== 'number') {
@@ -11,12 +10,11 @@ const validateData = (data: ReceivedData, whatToValidate = 'all') => {
       return false;
     }
     if (!Array.isArray(data.hobbies)) {
-      console.log('arr');
       return false;
-    }
-    if (!data.hobbies.every((el: unknown) => typeof el === 'string')) {
-      console.log('hobbies');
-      return false;
+    } else if ((data.hobbies as unknown[]).length > 0) {
+      if (!(data.hobbies as unknown[]).every((el: unknown) => typeof el === 'string')) {
+        return false;
+      }
     }
     return true;
   }
@@ -33,9 +31,9 @@ const validateData = (data: ReceivedData, whatToValidate = 'all') => {
     return true;
   }
   if (whatToValidate === 'hobbies') {
-    if (!!Array.isArray(data.hobbies)) {
+    if (!Array.isArray(data.hobbies)) {
       return false;
-    } else {
+    } else if ((data.hobbies as unknown[]).length > 0) {
       if (!(data.hobbies as unknown[]).every((el: unknown) => typeof el === 'string')) {
         return false;
       }

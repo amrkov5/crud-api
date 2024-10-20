@@ -14,7 +14,7 @@ type UserFromDB = {
 
 type PreparedResponse = {
   code: number;
-  data: string | UserFromDB | UserFromDB[];
+  data: string | UserFromDB | UserFromDB[] | { message: string } | [];
 };
 
 type ReceivedData = {

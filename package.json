@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./src",
     "start:dev": "cross-env NODE_OPTIONS='--experimental-sqlite' ts-node-dev --respawn --transpile-only ./src/index.ts"
   },
   "author": "amrkov5",

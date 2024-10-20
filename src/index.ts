@@ -8,12 +8,12 @@ dotenv.config();
 const port = process.env.PORT;
 
 const server = http.createServer(async (req, res) => {
-  const result: PreparedResponse = await router(req);
+  const result = (await router(req)) as PreparedResponse;
   res.writeHead(result.code, { 'Content-Type': 'application/json' });
   res.write(result.data);
   res.end();
 });
 
 server.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+  console.log(`Server is listening on port ${port}`);
 });

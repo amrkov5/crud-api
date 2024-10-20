@@ -2,6 +2,7 @@ import { IncomingMessage } from 'http';
 import { Methods, PreparedResponse } from './types';
 import handleGetRequest from './workers/get';
 import handlePostRequest from './workers/post';
+import deleteUserFromDb from './workers/delete';
 
 const router = async (req: IncomingMessage) => {
   if (req.url && req.url.includes('/api/users')) {
@@ -27,15 +28,21 @@ const router = async (req: IncomingMessage) => {
                 const res = handlePostRequest(data);
                 resolve(res);
               } catch (err) {
-                return resolve({ code: 400, data: 'Bad request: Invalid JSON format' });
+                return resolve({
+                  code: 400,
+                  data: JSON.stringify({ message: 'Bad request: Invalid JSON format' }),
+                });
               }
             } else {
-              return resolve({ code: 400, data: 'Bad request: Unsupported content type' });
+              return resolve({
+                code: 400,
+                data: JSON.stringify({ message: 'Bad request: Unsupported content type' }),
+              });
             }
           });
 
           req.on('error', () => {
-            reject({ code: 500, data: 'Internal server error' });
+            reject({ code: 500, data: JSON.stringify({ message: 'Internal server error' }) });
           });
         });
       }
@@ -43,11 +50,12 @@ const router = async (req: IncomingMessage) => {
         return { code: 400, message: 'bad' };
       }
       if (req.method === Methods.DELETE) {
-        return { code: 400, message: 'bad' };
+        const res: PreparedResponse = deleteUserFromDb(req);
+        return res;
       }
     }
   } else {
-    return { code: 400, message: 'Bad request' };
+    return { code: 400, data: JSON.stringify({ message: 'Bad request' }) };
   }
 };
 

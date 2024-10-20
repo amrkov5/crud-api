@@ -11,9 +11,9 @@ const handlePostRequest = (data: ReceivedData) => {
       const result = { ...resObj, hobbies: resObj.hobbies.split(',') };
       return { code: 201, data: JSON.stringify(result) };
     }
-    return { code: 400, data: 'Bad request: Invalid input data' };
+    return { code: 400, data: JSON.stringify({ message: 'Bad request: Invalid input data' }) };
   } catch {
-    return { code: 500, data: 'Internal server error' };
+    return { code: 500, data: JSON.stringify({ message: 'Internal server error' }) };
   }
 };
 
