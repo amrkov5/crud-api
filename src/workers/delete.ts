@@ -10,7 +10,7 @@ const deleteUserFromDb = (request: IncomingMessage) => {
       if (res.changes > 0) {
         return { code: 204, data: JSON.stringify({ message: 'User has been deleted' }) };
       }
-      return { code: 404, data: JSON.stringify({ message: 'Not found: User not found' }) };
+      return { code: 404, data: JSON.stringify({ message: 'User not found' }) };
     } else {
       return { code: 400, data: JSON.stringify({ message: 'Bad request: Invalid user ID' }) };
     }

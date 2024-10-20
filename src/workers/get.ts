@@ -12,11 +12,10 @@ const handleGetRequest = async (request: IncomingMessage) => {
         if (user) {
           const resObj = Object.assign({}, user) as UserFromDB;
           const hobbiesArr = resObj.hobbies.split(',').filter((el: string) => el.length > 0);
-          console.log(hobbiesArr);
           const result = { ...resObj, hobbies: hobbiesArr };
           return { code: 200, data: JSON.stringify(result) };
         } else {
-          return { code: 404, data: JSON.stringify({ message: 'User Not found' }) };
+          return { code: 404, data: JSON.stringify({ message: 'User not found' }) };
         }
       } else {
         return { code: 400, data: JSON.stringify({ message: 'Bad request: Invalid user ID' }) };
