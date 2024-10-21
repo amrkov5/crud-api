@@ -9,7 +9,7 @@ const handlePostRequest = async (data: ReceivedData) => {
       const res = (await requestMaker(
         JSON.stringify({
           reqType: DBMethods.CREATE,
-          userData: [uuidv4(), data.name, data.age, data.hobbies.join(',')],
+          userData: [uuidv4(), data.username, data.age, data.hobbies.join(',')],
         }),
       )) as PreparedResponse;
       if (res && res.code === 201) {

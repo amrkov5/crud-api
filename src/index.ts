@@ -9,7 +9,7 @@ dotenv.config();
 const port = process.env.PORT;
 const dbPort = process.env.DB_PORT;
 
-const dbServer = http.createServer(async (req, res) => {
+export const dbServer = http.createServer(async (req, res) => {
   if (req.method === 'POST' && req.url === '/db') {
     const result = (await dbWorker(req)) as PreparedResponse;
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -18,17 +18,18 @@ const dbServer = http.createServer(async (req, res) => {
   }
 });
 
-dbServer.listen(dbPort, () => {
-  console.log(`DB is listening on port ${dbPort}`);
-});
-
-const server = http.createServer(async (req, res) => {
+export const server = http.createServer(async (req, res) => {
   const result = (await router(req)) as PreparedResponse;
   res.writeHead(result.code, { 'Content-Type': 'application/json' });
   res.write(result.data);
   res.end();
 });
+if (process.env.NODE_ENV !== 'test') {
+  dbServer.listen(dbPort, () => {
+    console.log(`DB is listening on port ${dbPort}`);
+  });
 
-server.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
-});
+  server.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
+  });
+}

@@ -15,7 +15,7 @@ enum DBMethods {
 
 type UserFromDB = {
   id: string;
-  name: string;
+  username: string;
   age: number;
   hobbies: string;
 };
@@ -31,7 +31,7 @@ type ChangesInDB = {
 };
 
 type ReceivedData = {
-  name: string;
+  username: string;
   age: number;
   hobbies: string[];
 };

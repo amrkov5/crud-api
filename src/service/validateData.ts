@@ -2,7 +2,7 @@ import { ReceivedData } from '../types';
 
 const validateData = (data: ReceivedData, whatToValidate = 'all') => {
   if (whatToValidate === 'all') {
-    if (typeof data.name !== 'string') {
+    if (typeof data.username !== 'string') {
       return false;
     }
     if (typeof data.age !== 'number') {
@@ -18,7 +18,7 @@ const validateData = (data: ReceivedData, whatToValidate = 'all') => {
     return true;
   }
   if (whatToValidate === 'name') {
-    if (typeof data.name !== 'string') {
+    if (typeof data.username !== 'string') {
       return false;
     }
     return true;

@@ -9,7 +9,7 @@ const editUser = async (url: string, data: ReceivedData) => {
       const res = (await requestMaker(
         JSON.stringify({
           reqType: DBMethods.UPDATE,
-          userData: [data.name, data.age, data.hobbies.join(','), paramsArr[2]],
+          userData: [data.username, data.age, data.hobbies.join(','), paramsArr[2]],
         }),
       )) as PreparedResponse;
       if (res && res.code === 200) {
