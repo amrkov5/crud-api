@@ -15,6 +15,9 @@ const handlePostRequest = async (data: ReceivedData) => {
       if (res && res.code === 201) {
         return { code: 201, data: JSON.stringify(res.data) };
       }
+      if (res && res.code === 500) {
+        return { code: 500, data: JSON.stringify({ message: 'Internal server error' }) };
+      }
     }
     return { code: 400, data: JSON.stringify({ message: 'Bad request: Invalid input data' }) };
   } catch {

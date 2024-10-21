@@ -15,12 +15,12 @@ const dbWorker = async (res: IncomingMessage) => {
       const parsedData = JSON.parse(data);
       try {
         if (parsedData === DBMethods.ALL) {
-          const users = getAllUsers.all() as UserFromDB[] | [];
+          const users = getAllUsers().all() as UserFromDB[] | [];
           const result = normalizeDBResponse(users);
           resolve(JSON.stringify({ code: 200, data: result }));
         }
         if (parsedData.reqType === DBMethods.USER) {
-          const user = getUserById.get(parsedData.userData) as UserFromDB;
+          const user = getUserById().get(parsedData.userData) as UserFromDB;
           if (user) {
             const result = normalizeDBResponse(user);
             resolve(JSON.stringify({ code: 200, data: result }));
@@ -29,16 +29,16 @@ const dbWorker = async (res: IncomingMessage) => {
           }
         }
         if (parsedData.reqType === DBMethods.CREATE) {
-          const user = createUser.get(...parsedData.userData) as UserFromDB;
+          const user = createUser().get(...parsedData.userData) as UserFromDB;
           const result = normalizeDBResponse(user);
           resolve(JSON.stringify({ code: 201, data: result }));
         }
         if (parsedData.reqType === DBMethods.DELETE) {
-          const result = deleteUser.run(parsedData.userData);
+          const result = deleteUser().run(parsedData.userData);
           resolve(JSON.stringify({ code: 204, data: result }));
         }
         if (parsedData.reqType === DBMethods.UPDATE) {
-          const user = updateUser.get(...parsedData.userData) as UserFromDB;
+          const user = updateUser().get(...parsedData.userData) as UserFromDB;
           const result = normalizeDBResponse(user);
           resolve(JSON.stringify({ code: 200, data: result }));
         }
