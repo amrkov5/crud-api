@@ -97,7 +97,7 @@ const router = async (req: IncomingMessage) => {
       }
     }
   } else {
-    return { code: 400, data: JSON.stringify({ message: 'Bad request' }) };
+    return { code: 404, data: JSON.stringify({ message: 'Not found: Invalid URL' }) };
   }
 };
 

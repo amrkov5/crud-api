@@ -1,6 +1,7 @@
 export default {
   testEnvironment: 'node',
-  // globalSetup: './src/tests/startServer.js',
+  globalSetup: './src/tests/globalSetup.ts',
+  globalTeardown: './src/tests/globalTeardown.ts',
   extensionsToTreatAsEsm: ['.ts'],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',

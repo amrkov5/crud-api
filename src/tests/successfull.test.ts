@@ -1,28 +1,13 @@
 import supertest from 'supertest';
-import { server, dbServer } from '../index';
 
-describe('should test scenario 1', () => {
+describe('everything should be ok', () => {
+  const server = global.server;
   let createdUser: {
     id?: string;
     username: string;
     age: number;
     hobbies: string[];
   };
-
-  beforeAll((done) => {
-    server.listen(process.env.PORT, () => {
-      console.log(`Server is listening on port ${process.env.PORT}`);
-    });
-    dbServer.listen(process.env.DB_PORT, () => {
-      console.log(`DB is listening on port ${process.env.DB_PORT}`);
-    });
-    done();
-  });
-
-  afterAll(() => {
-    server.close();
-    dbServer.close();
-  });
 
   it('GET should return an empty array', async () => {
     const response = await supertest(server).get('/api/users');
