@@ -11,7 +11,7 @@ const dbPort = process.env.DB_PORT;
 
 const dbServer = http.createServer(async (req, res) => {
   if (req.method === 'POST' && req.url === '/db') {
-    const result = await dbWorker(req);
+    const result = (await dbWorker(req)) as PreparedResponse;
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.write(result);
     res.end();

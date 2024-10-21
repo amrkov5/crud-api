@@ -17,31 +17,39 @@ const requestMaker = async (data: string) => {
     },
   };
   return new Promise((resolve) => {
-    const req = http.request(options, (res) => {
-      let data = '';
+    try {
+      const req = http.request(options, (res) => {
+        let data = '';
 
-      res.on('data', (chunk) => {
-        data += chunk;
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        res.on('end', () => {
+          try {
+            const parsedData = JSON.parse(data);
+            if (parsedData.code === 404) {
+              resolve({ code: 404, data: 'Not found' });
+            }
+            if (parsedData.code === 500) {
+              resolve({ code: 500, data: 'Internal server error' });
+            }
+            resolve(parsedData);
+          } catch {
+            resolve({ code: 500, data: 'Internal server error' });
+          }
+        });
       });
 
-      res.on('end', () => {
-        const parsedData = JSON.parse(data);
-        if (parsedData.code === 404) {
-          resolve(undefined);
-        }
-        if (parsedData.code === 500) {
-          resolve(parsedData);
-        }
-        resolve(JSON.stringify(parsedData.data));
+      req.on('error', () => {
+        resolve({ code: 500, data: 'Internal server error' });
       });
-    });
 
-    req.on('error', (err) => {
-      console.error('Error:', err.message);
-    });
-
-    req.write(data);
-    req.end();
+      req.write(data);
+      req.end();
+    } catch {
+      resolve({ code: 500, data: 'Internal server error' });
+    }
   });
 };
 

@@ -6,7 +6,6 @@ const validateData = (data: ReceivedData, whatToValidate = 'all') => {
       return false;
     }
     if (typeof data.age !== 'number') {
-      console.log('age');
       return false;
     }
     if (!Array.isArray(data.hobbies)) {

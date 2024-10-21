@@ -22,7 +22,12 @@ type UserFromDB = {
 
 type PreparedResponse = {
   code: number;
-  data: string | UserFromDB | UserFromDB[] | { message: string } | [];
+  data: string | UserFromDB | UserFromDB[] | { message: string } | [] | ChangesInDB;
+};
+
+type ChangesInDB = {
+  lastInsertRowid: number;
+  changes: number;
 };
 
 type ReceivedData = {
